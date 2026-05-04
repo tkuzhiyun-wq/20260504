@@ -16,7 +16,11 @@ const eyeLeftOuterIndices = [463, 341, 256, 252, 253, 254, 339, 255, 359, 467, 2
 
 function preload() {
   // 初始化 faceMesh 模型
-  faceMesh = ml5.faceMesh(options);
+  if (typeof ml5 !== 'undefined') {
+    faceMesh = ml5.faceMesh(options);
+  } else {
+    console.error("錯誤：ml5.js 函式庫未載入，請檢查網路連線或 script 連結。");
+  }
 }
 
 function setup() {
@@ -26,8 +30,12 @@ function setup() {
   capture = createCapture(VIDEO);
   capture.hide();
 
-  // 開始偵測臉部
-  faceMesh.detectStart(capture, gotFaces);
+  // 檢查 faceMesh 是否存在並開始偵測
+  if (faceMesh) {
+    faceMesh.detectStart(capture, gotFaces);
+  } else {
+    console.warn("無法啟動辨識：faceMesh 模型尚未就緒。");
+  }
 }
 
 function gotFaces(results) {
@@ -57,8 +65,8 @@ function draw() {
   if (faces.length > 0) {
     let face = faces[0];
     
-    stroke('#ff0000'); // 紅色線條
-    strokeWeight(11);  // 粗細為 15
+    stroke('#ff0000');
+    strokeWeight(15);  // 依照您的需求修正為 15
     noFill();
 
     // 依照指定的編號依序連線
