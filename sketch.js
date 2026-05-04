@@ -13,6 +13,8 @@ const eyeRightOuterIndices = [226, 247, 30, 29, 27, 28, 56, 190, 243, 112, 26, 2
 // 左眼編號：包含 466 的內圈與包含 467 的外圈
 const eyeLeftInnerIndices = [362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398];
 const eyeLeftOuterIndices = [463, 341, 256, 252, 253, 254, 339, 255, 359, 467, 260, 259, 257, 258, 286, 414];
+// 臉部最外層輪廓編號
+const faceOvalIndices = [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109];
 
 function preload() {
   // 初始化 faceMesh 模型
@@ -156,6 +158,22 @@ function draw() {
     for (let i = 0; i < eyeLeftOuterIndices.length; i++) {
       let currIdx = eyeLeftOuterIndices[i];
       let nextIdx = eyeLeftOuterIndices[(i + 1) % eyeLeftOuterIndices.length];
+
+      let pt1 = face.keypoints[currIdx];
+      let pt2 = face.keypoints[nextIdx];
+
+      let x1 = map(pt1.x, 0, capture.width, -displayW / 2, displayW / 2);
+      let y1 = map(pt1.y, 0, capture.height, -displayH / 2, displayH / 2);
+      let x2 = map(pt2.x, 0, capture.width, -displayW / 2, displayW / 2);
+      let y2 = map(pt2.y, 0, capture.height, -displayH / 2, displayH / 2);
+
+      line(x1, y1, x2, y2);
+    }
+
+    // 繪製臉部最外層輪廓，粗細設為 1
+    for (let i = 0; i < faceOvalIndices.length; i++) {
+      let currIdx = faceOvalIndices[i];
+      let nextIdx = faceOvalIndices[(i + 1) % faceOvalIndices.length];
 
       let pt1 = face.keypoints[currIdx];
       let pt2 = face.keypoints[nextIdx];
