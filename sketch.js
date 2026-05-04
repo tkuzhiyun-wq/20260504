@@ -66,7 +66,7 @@ function draw() {
     let face = faces[0];
     
     stroke('#ff0000');
-    strokeWeight(15);  // 依照您的需求修正為 15
+    strokeWeight(1);
     noFill();
 
     // 依照指定的編號依序連線
